@@ -1,0 +1,18 @@
+{{> header}}
+
+<main>
+    <h1> Welcome to my blog!</h1>
+    {{#if blogPosts.length}}
+        <ul>
+            {{#each blogPosts}}
+                <li>
+                    <h2>{{title}}</h2>
+                    <p>{{content}}</p>
+                    <small>Posted on {{date_created}}</small>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No blog posts.</p>
+    {{/if}}
+</main>
