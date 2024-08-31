@@ -1,5 +1,10 @@
 const router = require('express').Router();
 const { BlogPost } = require('../models');
+const authMiddleware = require('../helpers/authMiddleware');
+
+router.get('dashboard', authMiddleware, (req, res) => {
+    res.render('dashboard');
+})
 
 router.get('/', async (req, res) => {
     try {

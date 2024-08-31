@@ -11,6 +11,18 @@ router.get('/login', (req, res) => {
         return;
     }
     res.render('login');
+});
+
+router.get('/signup', (req, res) => {
+    if (req.session.loggedIn) {
+        res.redirect('/');
+    } else {
+        res.render('signup');
+    }
+});
+
+router.post('/signup', (req, res) => {
+    res.redirect('/login');
 })
 
 router.post('/login', (req, res) => {
