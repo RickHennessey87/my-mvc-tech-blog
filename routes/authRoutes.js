@@ -24,5 +24,16 @@ router.post('/login', (req, res) => {
     }
 });
 
+router.get('/logout', (req, res) => {
+    req.session.destroy((error) => {
+        if (error) {
+            console.error('Cannot destroy session:', error);
+
+            return res.status(500).send('Failed to logout');
+        }
+        res.redirect('/');
+    }) 
+})
+
 module.exports = router;
 
