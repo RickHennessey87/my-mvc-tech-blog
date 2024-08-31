@@ -2,33 +2,26 @@ const router = require('express').Router();
 const { BlogPost } = require('../models');
 const authMiddleware = require('../helpers/authMiddleware');
 
-router.get('dashboard', authMiddleware, (req, res) => {
+router.get('/dashboard', authMiddleware, (req, res) => {
     res.render('dashboard');
 })
 
 router.get('/', async (req, res) => {
     try {
-        // const blogPostData = await BlogPost.findAll({
-        //     attributes: ['id', 'title', 'content', 'date_created']
-        // });
+        const blogPostData = await BlogPost.findAll({
+            attributes: ['id', 'title', 'content', 'date_created']
+        });
 
-        // const blogPosts = blogPostData.map((post) => post.get({ plain: true }));
+        const blogPosts = blogPostData.map((post) => post.get({ plain: true }));
 
-        const blogPosts = [
-            { title: 'First Post', content: 'This is the first post.', date_created: '2024-08-30' }
-        ];
+        console.log('Blog Posts:', blogPosts);
 
-        // res.render('homepage', {
-        //     blogPosts,
-        //     loggedIn: req.session.loggedIn
-        // });
-
-        res.render('homepage', { 
+        res.render('homepage', {
             blogPosts,
             loggedIn: req.session.loggedIn
         });
-
     } catch (error) {
+        console.error('Error fetching blog posts:', error);
         res.status(500).json(error);
     }
 });
