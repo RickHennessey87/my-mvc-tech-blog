@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { BlogPost } = require('../models');
+const { BlogPost, User } = require('../models');
 const authMiddleware = require('../helpers/authMiddleware');
 
 router.get('/dashboard', authMiddleware, (req, res) => {
@@ -24,6 +24,10 @@ router.get('/', async (req, res) => {
         console.error('Error fetching blog posts:', error);
         res.status(500).json(error);
     }
+});
+
+router.get('/signup', (req, res) => {
+    res.render('signup');
 });
 
 module.exports = router;
