@@ -9,7 +9,8 @@ router.get('/dashboard', authMiddleware, (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const blogPostData = await BlogPost.findAll({
-            attributes: ['id', 'title', 'content', 'date_created']
+            attributes: ['id', 'title', 'content', 'date_created'],
+            order: [['date_created', 'DESC']]
         });
 
         const blogPosts = blogPostData.map((post) => post.get({ plain: true }));
@@ -20,6 +21,7 @@ router.get('/', async (req, res) => {
             blogPosts,
             loggedIn: req.session.loggedIn
         });
+        
     } catch (error) {
         console.error('Error fetching blog posts:', error);
         res.status(500).json(error);
