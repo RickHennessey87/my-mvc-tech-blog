@@ -1,9 +1,5 @@
 const router = require('express').Router();
-
-const testUser = {
-    username: 'test',
-    password: 'password'
-};
+const { User } = require('../models');
 
 router.get('/login', (req, res) => {
     if (req.session.loggedIn) {
@@ -21,18 +17,33 @@ router.get('/signup', (req, res) => {
     }
 });
 
-router.post('/signup', (req, res) => {
-    res.redirect('/login');
-})
+router.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const userData = await User.findOne({
+            where: { 
+                username 
+            }
+        });
 
-router.post('/login', (req, res) => {
-    const { username, password } = req.body;
+        if (!userData) {
+            return res.status(401).send('Invalid username or password');
+        }
 
-    if (username === testUser.username && password === testUser.password) {
+        const validPassword = await userData.checkPassword(password);
+
+        if (!validPassword) {
+            return res.status(401).send('Invalid username or password')
+        }
+
+        req.session.user_id = userData.id;
+        req.session.username = userData.username;
         req.session.loggedIn = true;
+
         res.redirect('/');
-    } else {
-        res.status(401).send('Invalid username or password');
+    } catch (error) {
+        console.error('Error while logging in:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
