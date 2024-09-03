@@ -2,9 +2,43 @@ const router = require('express').Router();
 const { BlogPost, User, Comment } = require('../models');
 const authMiddleware = require('../helpers/authMiddleware');
 
-router.get('/dashboard', authMiddleware, (req, res) => {
-    res.render('dashboard');
-})
+router.get('/dashboard', authMiddleware, async (req, res) => {
+    try {
+        const userPostsData = await BlogPost.findAll({
+            where: {
+                user_id: req.session.user_id
+            },
+            attributes: ['id', 'title', 'content', 'date_created'],
+            include: [
+                {
+                    model: Comment,
+                    attributes: ['content', 'date_created'],
+                    include: {
+                        model: User,
+                        attributes: ['username']
+                    }
+                }
+            ],
+            order: [['date_created', 'DESC']]
+        });
+
+        const userPosts = userPostsData.map((post) => post.get({
+            plain: true
+        }));
+
+        res.render('dashboard', {
+            userPosts,
+            loggedIn: req.session.loggedIn,
+            username: req.session.username
+        });
+
+    } catch (error) {
+        console.error('Error fetching user posts:', error);
+        res.status(500).json({
+            message: 'Error fetching user posts',
+        });
+    }
+});
 
 router.get('/', async (req, res) => {
     try {
@@ -13,9 +47,9 @@ router.get('/', async (req, res) => {
             order: [['date_created', 'DESC']]
         });
 
-        const blogPosts = blogPostData.map((post) => post.get({ plain: true }));
-
-        console.log('Blog Posts:', blogPosts);
+        const blogPosts = blogPostData.map((post) => post.get({ 
+            plain: true 
+        }));
 
         res.render('homepage', {
             blogPosts,
@@ -53,9 +87,14 @@ router.get('/posts/:id', async (req, res) => {
             });
         }
 
-        const postData = post.get({ plain: true });
+        const postData = post.get({ 
+            plain: true 
+        });
 
-        res.render('postDetails', { post: postData, loggedIn: req.session.loggedIn });
+        res.render('postDetails', { 
+            post: postData, loggedIn: 
+            req.session.loggedIn 
+        });
 
     } catch (error) {
         console.error('Error fetching post details:', error);

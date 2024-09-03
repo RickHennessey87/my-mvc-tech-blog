@@ -31,16 +31,20 @@
             {{#each post.comments}}
                 <div>
                     <p>{{this.content}}</p>
-                    <p>By: {{this.User.username}}</p>
+                    <p>By: {{this.user.username}}</p>
                     <p>Date Created: {{this.date_created}}</p>
                 </div>
             {{/each}}
         </div>
-        <form action="/comments" method="POST">
-            <input type="hidden" name="postId" value="{{post.id}}">
-            <textarea name="content" placeholder="Leave a comment" required></textarea>
-            <button type="submit">Submit</button>
-        </form>
+        {{#if loggedIn}}
+            <form action="/comments" method="POST">
+                <input type="hidden" name="postId" value="{{post.id}}">
+                <textarea name="content" placeholder="Leave a comment" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        {{else}}
+            <p><a href="/login">Log in</a> to leave a comment.</p>
+        {{/if}}
     </main>
 </body>
 </html>

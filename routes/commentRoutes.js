@@ -3,15 +3,19 @@ const { Comment } = require('../models');
 
 router.post('/comment', async (req, res) => {
     try {
-        const { postId, content } = req.body;
+        const { post_id, content } = req.body;
+
+        if (!req.session.loggedIn) {
+            return res.status(401).redirect('/login');
+        }
 
         await Comment.create({
-            postId,
+            post_id,
             content,
             userId: req.session.user_id
         });
 
-        res.redirect(`/posts/${postId}`);
+        res.redirect(`/posts/${post_id}`);
 
     } catch (error) {
         console.error('Error creating comment:', error);
