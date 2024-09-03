@@ -20,7 +20,7 @@
         </nav>
     </header>
     <main>
-        <p>Created by: {{post.username}}</p>
+        <p>Created by: {{post.user.username}}</p>
         <p>Date Created: {{post.date_created}}</p>
         <div>
             <h2>Contents:</h2>
@@ -31,6 +31,7 @@
             {{#each post.comments}}
                 <div>
                     <p>{{this.content}}</p>
+                    <p>By: {{this.User.username}}</p>
                     <p>Date Created: {{this.date_created}}</p>
                 </div>
             {{/each}}

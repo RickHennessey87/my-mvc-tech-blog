@@ -22,14 +22,23 @@ BlogPost.init(
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW,
+        },
+        userId : {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'User',
+                key: 'id'
+            }
         }
+
     },
     {
         sequelize,
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'blogpost'
+        modelName: 'BlogPost',
+        tableName: 'BlogPost'
     }
 );
 
