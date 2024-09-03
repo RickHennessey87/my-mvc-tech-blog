@@ -3,11 +3,15 @@ const session = require('express-session');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const routes = require('./routes');
+const handlebarsHelpers = require('./helpers/handlebars-helpers');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sequelize = require('./config/connection');
 const app = express();
 const PORT = process.env.PORT || 3001;
-const hbs = exphbs.create({});
+
+const hbs = exphbs.create({
+    helpers: handlebarsHelpers
+});
 
 const sess = {
     secret: process.env.SESSION_SECRET,
