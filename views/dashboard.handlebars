@@ -22,13 +22,15 @@
                     <article>
                         <h3>{{this.title}}</h3>
                         <p>{{this.content}}</p>
-                        <p>Created on: {{this.date_created}}</p>
+                        <p>Created on: {{formatDate this.date_created}}</p>
                         {{#each this.comments}}
                             <div>
                                 <p>{{this.username}} said: {{this.content}}</p>
-                                <p>Commented on: {{this.date_created}}</p>
+                                <p>Commented on: {{formatDate this.date_created}}</p>
                             </div>
                         {{/each}}
+                        <a href="/dashboard/edit/{{this.id}}">Edit</a>
+                        <a href="/dashboard/delete/{{this.id}}">Delete</a>
                     </article>
                 {{/each}}
             {{else}}
@@ -37,7 +39,7 @@
         </section>
         <section>
             <h2>Add a New Post</h2>
-            <form action="posts" method="POST">
+            <form action="/dashboard/new" method="POST">
                 <input type="text" name="title" placeholder="Post Title" required>
                 <textarea name="content" placeholder="Add text here" required></textarea>
                 <button type="submit">Add Post</button>

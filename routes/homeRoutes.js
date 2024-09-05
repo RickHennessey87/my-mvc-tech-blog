@@ -40,6 +40,36 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
     }
 });
 
+router.post('/dashboard/new', authMiddleware, async (req, res) => {
+    try {
+        const { title, content } = req.body;
+
+        if (!title.trim() || !content.trim()) {
+            res.status(400).json({
+                    message: 'Title and content required to create a post.'
+                });
+
+            return
+        }
+
+        await BlogPost.create({
+            title,
+            content,
+            user_id: req.session.user_id,
+            date_created: new Date()
+        });
+
+        res.redirect('/dashboard');
+
+    } catch (error) {
+        console.error('Error creating post:', error);
+
+        res.status(500).json({
+            message: 'Failed to create post.'
+        })
+    }
+})
+
 router.get('/', async (req, res) => {
     try {
         const blogPostData = await BlogPost.findAll({
