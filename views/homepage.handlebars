@@ -8,12 +8,6 @@
 <body>
     <header>
         <h1> Welcome to my blog!</h1>
-        {{#if loggedIn}}
-            <a href="/logout">Logout</a>
-        {{else}}
-            <a href="/login">Login</a>
-            <a href="/signup">Signup</a>
-        {{/if}}
     </header>
     <main>
         {{#if blogPosts.length}}
@@ -23,8 +17,7 @@
                         <h2>
                             <a href="/posts/{{id}}">{{title}}</a>
                         </h2>
-                        <p>{{truncate content 100}}</p>
-                        <small>Posted on {{formatDate date_created}}</small>
+                        <p>Posted on {{formatDate date_created}}</p>
                     </li>
                 {{/each}}
             </ul>

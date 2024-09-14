@@ -1,7 +1,8 @@
 const router = require('express').Router();
+const authMiddleware = require('../helpers/authMiddleware');
 const { Comment } = require('../models');
 
-router.post('/comment', async (req, res) => {
+router.post('/comment', authMiddleware, async (req, res) => {
     try {
         const { post_id, content } = req.body;
 

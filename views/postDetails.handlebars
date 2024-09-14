@@ -8,22 +8,16 @@
 <body>
     <header>
         <h1>{{post.title}}</h1>
-        <nav>
-           <a href="/">Home</a>
-            {{#if loggedIn}}
-                <a href="/dashboard">Dashboard</a>
-                <a href="/logout">Logout</a>
-            {{else}}
-                <a href="/login">Login</a>
-                <a href="/signup">Signup</a>
-            {{/if}} 
-        </nav>
     </header>
     <main>
-        <p>Created by: {{post.user.username}}</p>
-        <p>Date Created: {{post.date_created}}</p>
         <div>
-            <h2>Contents:</h2>
+            <p>{{post.contents}}</p>
+        </div>
+        <div>
+            <p>Created by: {{post.user.username}}</p>
+            <p>Date Created: {{formatDate post.date_created}}</p>
+        </div>
+        <div>
             <p>{{post.contents}}</p>
         </div>
         <div>
@@ -32,7 +26,9 @@
                 <div>
                     <p>{{this.content}}</p>
                     <p>By: {{this.user.username}}</p>
-                    <p>Date Created: {{this.date_created}}</p>
+                    <p>
+                        <small>Date Created: {{formatDate this.date_created}}</small>
+                    </p>
                 </div>
             {{/each}}
         </div>
