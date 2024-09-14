@@ -8,11 +8,6 @@
 <body>
     <header>
         <h1>Welcome yo your Dashboard, {{username}}!</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Logout</a>
-        </nav>
     </header>
     <main>
         <section>
@@ -38,9 +33,12 @@
             {{/if}}
         </section>
         <section>
-            <h2>Add a New Post</h2>
-            <form action="/dashboard/new" method="POST">
-                <input type="text" name="title" placeholder="Post Title" required>
+            <button id="show-post-form">Create a New Blog Post</button>
+            <form id="new-post-form" action="/dashboard/new" method="POST" style="display: none;">
+                <div>
+                    <label></label>
+                    <input type="text" name="title" placeholder="Post Title" required>
+                </div>
                 <textarea name="content" placeholder="Add text here" required></textarea>
                 <button type="submit">Add Post</button>
             </form>

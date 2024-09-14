@@ -94,7 +94,7 @@ router.get('/', async (req, res) => {
 
 router.get('/posts/:id', authMiddleware, async (req, res) => {
     try {
-        const post = await BlogPost.findByPk(req.params.id, {
+        const postData = await BlogPost.findByPk(req.params.id, {
             include: [
                 {
                     model: User,
@@ -102,7 +102,7 @@ router.get('/posts/:id', authMiddleware, async (req, res) => {
                 },
                 {
                     model: Comment,
-                    attributes: ['content', 'date_created'],
+                    attributes: ['id','content', 'date_created'],
                     include: {
                         model: User,
                         attributes: ['username']
@@ -111,20 +111,24 @@ router.get('/posts/:id', authMiddleware, async (req, res) => {
             ]
         });
 
-        if (!post) {
+        if (!postData) {
             return res.status(404).render('404', {
                 message: 'No post found.'
             });
         }
 
-        const postData = post.get({ 
+        const post = postData.get({ 
             plain: true 
         });
 
+        console.log('Post data:', post);
+
         res.render('postDetails', { 
-            post: postData, loggedIn: 
-            req.session.loggedIn 
+            post, 
+            loggedIn: req.session.loggedIn 
         });
+
+
 
     } catch (error) {
         console.error('Error fetching post details:', error);

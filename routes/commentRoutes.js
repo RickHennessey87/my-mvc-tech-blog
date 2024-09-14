@@ -2,7 +2,7 @@ const router = require('express').Router();
 const authMiddleware = require('../helpers/authMiddleware');
 const { Comment } = require('../models');
 
-router.post('/comment', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
         const { post_id, content } = req.body;
 
@@ -13,7 +13,8 @@ router.post('/comment', authMiddleware, async (req, res) => {
         await Comment.create({
             post_id,
             content,
-            userId: req.session.user_id
+            user_id: req.session.user_id,
+            date_created: new Date()
         });
 
         res.redirect(`/posts/${post_id}`);
