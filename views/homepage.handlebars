@@ -4,26 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header>
+    <header class="main-header">
         <h1> Welcome to my blog!</h1>
     </header>
     <main>
-        {{#if blogPosts.length}}
-            <ul>
-                {{#each blogPosts}}
-                    <li>
-                        <h2>
-                            <a href="/posts/{{id}}">{{title}}</a>
-                        </h2>
-                        <p>Posted on {{formatDate date_created}}</p>
-                    </li>
-                {{/each}}
-            </ul>
-        {{else}}
-            <p>No blog posts.</p>
-        {{/if}}
+        <section class="posts-section">
+            {{#if blogPosts.length}}
+                <ul class="posts-list">
+                    {{#each blogPosts}}
+                        <li>
+                            <h2>
+                                <a href="/posts/{{id}}">{{title}}</a>
+                            </h2>
+                            <p>Posted on {{formatDate date_created}}</p>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <p>No blog posts.</p>
+            {{/if}}
+        </section>
     </main>
 </body>
 </html>

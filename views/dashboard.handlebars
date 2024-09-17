@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome yo your Dashboard, {{username}}!</h1>
+    <header class="main-header">
+        <h1>Welcome your Dashboard, {{username}}!</h1>
     </header>
     <main>
-        <section>
+        <section class="dashboard-posts">
             <h2>Your Posts</h2>
             {{#if userPosts.length}}
                 {{#each userPosts}}
@@ -25,24 +26,30 @@
                             </div>
                         {{/each}}
                         <a href="/dashboard/edit/{{this.id}}">Edit</a>
-                        <a href="/dashboard/delete/{{this.id}}">Delete</a>
+                        <form action="/dashboard/delete/{{this.id}}" method="POST" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
                     </article>
                 {{/each}}
             {{else}}
                 <p>You have no blog posts.</p>
             {{/if}}
         </section>
-        <section>
+        <section class="new-post-form">
             <button id="show-post-form">Create a New Blog Post</button>
             <form id="new-post-form" action="/dashboard/new" method="POST" style="display: none;">
                 <div>
-                    <label></label>
+                    <label for="title">Title:</label>
                     <input type="text" name="title" placeholder="Post Title" required>
                 </div>
-                <textarea name="content" placeholder="Add text here" required></textarea>
+                <div>
+                    <label for="content">Content:</label>
+                    <textarea name="content" placeholder="Add text here" required></textarea>
+                </div>
                 <button type="submit">Add Post</button>
             </form>
         </section>
     </main>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>

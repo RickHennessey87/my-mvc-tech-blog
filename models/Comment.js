@@ -24,20 +24,23 @@ Comment.init(
             type: DataTypes.INTEGER,
             references: {
                 model: 'BlogPost',
-                key: 'id'
+                key: 'id',
+                onDelete: 'CASCADE'
             }
         },
         user_id : {
             type: DataTypes.INTEGER,
             references: {
                 model: 'User',
-                key: 'id'
+                key: 'id',
+                onDelete: 'CASCADE'
             }
         }
     },
     {
         sequelize,
         modelName: 'Comment',
+        tableName: 'Comment',
         timestamps: false,
         freezeTableName: true,
         underscored: true,

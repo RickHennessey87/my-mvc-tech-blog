@@ -92,7 +92,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/posts/:id', authMiddleware, async (req, res) => {
+router.get('/posts/:id', async (req, res) => {
     try {
         const postData = await BlogPost.findByPk(req.params.id, {
             include: [
@@ -134,6 +134,86 @@ router.get('/posts/:id', authMiddleware, async (req, res) => {
         console.error('Error fetching post details:', error);
         res.status(500).json({
             message: 'Error fetching post details'
+        });
+    }
+});
+
+router.get('/dashboard/edit/:id', authMiddleware, async (req, res) => {
+    try {
+        const postData = await BlogPost.findByPk(req.params.id, {
+            where: {
+                user_id: req.session.user_id
+            }
+        })
+
+        if (!postData) {
+            return res.status(404).json({
+                message: 'No blog post found.'
+            });
+        }
+
+        const post = postData.get({
+            plain: true
+        })
+
+        res.render('editPost', {
+            post,
+            loggedIn: req.session.loggedIn
+        });
+
+    } catch (error) {
+        console.error('Error fetching blog post:', error);
+        res.status(500).json({
+            message: 'Error fetching blog post.'
+        });
+    }
+})
+
+router.post('/dashboard/edit/:id', authMiddleware, async (req, res) => {
+    try {
+        const { title, content } = req.body;
+
+        await BlogPost.update({
+            title,
+            content
+        },
+        {
+            where: {
+                id:req.params.id,
+                user_id: req.session.user_id
+            }
+        });
+
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error updating post:', error);
+        res.status(500).json({
+            message: 'Error updating post.'
+        });
+    }
+});
+
+router.post('/dashboard/delete/:id', authMiddleware, async (req, res) => {
+    try {
+
+        await Comment.destroy({
+            where: {
+                post_id: req.params.id
+            }
+        });
+
+        await BlogPost.destroy({
+            where: {
+                id: req.params.id,
+                user_id: req.session.user_id
+            }
+        });
+
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error deleting post:', error);
+        res.status(500).json({
+            message: 'Error deleting post.'
         });
     }
 });
