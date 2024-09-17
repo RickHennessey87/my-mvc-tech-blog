@@ -7,28 +7,19 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header>
+    <main class="post-details">
         <h1>{{post.title}}</h1>
-    </header>
-    <main>
-        <div>
-            <p>{{post.content}}</p>
-        </div>
-        <div>
-            <p>Created by: {{post.user.username}}</p>
-            <p>Date Created: {{formatDate post.date_created}}</p>
-        </div>
-        <div>
-            <p>{{post.contents}}</p>
-        </div>
+        <p>{{post.content}}</p>
+        <p><small>Created by: {{post.user.username}}</small></p>
+        <p><small>Date Created: {{formatDate post.date_created}}</small></p>
         <div class="comments">
             <h3>Comments:</h3>
             {{#if post.Comments.length}}
                 {{#each post.Comments}}
                     <div>
                         <p>{{this.content}}</p>
-                        <p>By: {{this.user.username}}</p>
-                        <p>Date Created: {{formatDate this.date_created}}</p>
+                        <p><small>By: {{this.user.username}}</small></p>
+                        <p><small>Date Created: {{formatDate this.date_created}}</small></p>
                     </div>
                 {{/each}}
             {{else}}
@@ -37,7 +28,7 @@
         </div>
 
         {{#if loggedIn}}
-            <form action="/comments" method="POST">
+            <form class="comment-form" action="/comments" method="POST">
                 <input type="hidden" name="post_id" value="{{post.id}}">
                 <textarea name="content" placeholder="Leave a comment" required></textarea>
                 <button type="submit">Submit</button>

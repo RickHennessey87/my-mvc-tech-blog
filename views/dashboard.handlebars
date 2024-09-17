@@ -18,16 +18,18 @@
                     <article>
                         <h3>{{this.title}}</h3>
                         <p>{{this.content}}</p>
-                        <p>Created on: {{formatDate this.date_created}}</p>
+                        <p><small>Created on: {{formatDate this.date_created}}</small></p>
                         {{#each this.comments}}
                             <div>
                                 <p>{{this.username}} said: {{this.content}}</p>
                                 <p>Commented on: {{formatDate this.date_created}}</p>
                             </div>
                         {{/each}}
-                        <a href="/dashboard/edit/{{this.id}}">Edit</a>
+                        <form action="/dashboard/edit/{{this.id}}" method="GET" style="display:inline;">
+                            <button type="submit" class="btn edit-btn">Edit</button>
+                        </form>
                         <form action="/dashboard/delete/{{this.id}}" method="POST" style="display:inline;">
-                            <button type="submit">Delete</button>
+                            <button type="submit" class="btn delete-btn">Delete</button>
                         </form>
                     </article>
                 {{/each}}
