@@ -8,6 +8,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sequelize = require('./config/connection');
 const app = express();
 const PORT = process.env.PORT || 3001;
+const { User, BlogPost, Comment } = require('./models');
 
 const hbs = exphbs.create({
     helpers: handlebarsHelpers
@@ -34,7 +35,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(routes)
 
 sequelize.sync({ force: false })
-    .then(() => {
+    .then(async () => {
+        await User.sync();  
+        await BlogPost.sync(); 
+        await Comment.sync(); 
+
         console.log('Database synchronized');
         app.listen(PORT, () => console.log(`Now listening on PORT ${PORT}`));
     }).catch(error => {
