@@ -34,11 +34,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(routes)
 
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
     .then(async () => {
-        await User.sync();  
-        await BlogPost.sync(); 
-        await Comment.sync(); 
+        await User.sync({ alter: true });  
+        await BlogPost.sync({ alter: true }); 
+        await Comment.sync({ alter: true }); 
 
         console.log('Database synchronized');
         app.listen(PORT, () => console.log(`Now listening on PORT ${PORT}`));
