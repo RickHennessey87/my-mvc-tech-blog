@@ -24,6 +24,12 @@ if (process.env.DATABASE_URL) {
             host: process.env.DB_HOST || 'localhost',
             dialect: 'postgres',
             port: process.env.DB_PORT || 5432,
+            dialectOptions: {
+                ssl: {
+                  require: true, // Ensure SSL is used
+                  rejectUnauthorized: false,
+                },
+            },
             logging: false
         }
     );
