@@ -17,6 +17,25 @@ router.get('/signup', (req, res) => {
     }
 });
 
+router.post('/signup', async (req, res) => {
+    try {
+        const userData = await User.create({
+            username: req.body.username,
+            password: req.body.password,
+        });
+
+        req.session.save(() => {
+            req.session.user_id = userData.id;
+            req.session.username = userData.username;
+            req.session.loggedIn = true;
+
+            res.redirect('/');
+        });
+    } catch (error) {
+        res.status(500).send('Failed to create user.')
+    }
+})
+
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -36,11 +55,14 @@ router.post('/login', async (req, res) => {
             return res.status(401).send('Invalid username or password')
         }
 
-        req.session.user_id = userData.id;
-        req.session.username = userData.username;
-        req.session.loggedIn = true;
-
-        res.redirect('/');
+        req.session.save(() => {
+            req.session.user_id = userData.id;
+            req.session.username = userData.username;
+            req.session.loggedIn = true;
+    
+            res.redirect('/');
+        });
+        
     } catch (error) {
         console.error('Error while logging in:', error);
         res.status(500).send('Internal Server Error');
